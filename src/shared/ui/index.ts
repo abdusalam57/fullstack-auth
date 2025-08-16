@@ -1,4 +1,4 @@
-export { Button, buttonVariants } from "./button";
+export { Button, buttonVariants } from './button'
 export {
   DropdownMenu,
   DropdownMenuPortal,
@@ -15,4 +15,4 @@ export {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-} from "./dropdown-menu";
+} from './dropdown-menu'

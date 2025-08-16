@@ -1,25 +1,28 @@
-import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
-import "./globals.css";
-import { RootProvider } from "./providers";
-import { ThemeToggle } from "@/features/theme-toggle";
+import type { Metadata } from 'next'
+import { Nunito } from 'next/font/google'
+import './globals.css'
+import { RootProvider } from './providers'
+import { ThemeToggle } from '@/features/theme-toggle'
 
 const nunito = Nunito({
-  variable: "--font-nunito",
-  subsets: ["cyrillic"],
-});
+  variable: '--font-nunito',
+  subsets: ['cyrillic'],
+})
 
 export const metadata: Metadata = {
-  title: "Главная страница",
-};
+  title: 'Главная страница',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning>
+    <html
+      lang="ru"
+      suppressHydrationWarning
+    >
       <body className={`${nunito.variable} antialiased`}>
         <RootProvider>
           <div className="relative flex min-h-screen">
@@ -31,5 +34,5 @@ export default function RootLayout({
         </RootProvider>
       </body>
     </html>
-  );
+  )
 }
