@@ -9,7 +9,9 @@
     "lint": "next lint",
     "docker:build": "docker build -t fullstack-auth .",
     "docker:run": "docker run --rm -it -p 3000:3000 fullstack-auth",
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.1.16",
