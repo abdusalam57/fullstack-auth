@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import type { PropsWithChildren } from "react";
-import { ThemeProvider } from "./theme-provider";
+import type { PropsWithChildren } from 'react'
+import { ThemeProvider } from './theme-provider'
 
 export function RootProvider({ children }: PropsWithChildren<unknown>) {
   return (
@@ -13,5 +13,5 @@ export function RootProvider({ children }: PropsWithChildren<unknown>) {
     >
       {children}
     </ThemeProvider>
-  );
+  )
 }
