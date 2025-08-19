@@ -6,7 +6,7 @@ export default function Home() {
     <div className="space-y-5 text-center">
       <h1 className="text-4xl font-bold">Главная страница</h1>
       <Link
-        href="/login"
+        href="/auth/login"
         className={buttonVariants()}
       >
         Войти в аккаунт
