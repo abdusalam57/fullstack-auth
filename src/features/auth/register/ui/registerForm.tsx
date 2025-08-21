@@ -6,7 +6,10 @@ import {
   RegisterSchema,
 } from '@/features/auth/register/model'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CardWrapper } from '@/features/auth/cardWrapper'
+import { useState } from 'react'
+import { useTheme } from 'next-themes'
+import { CardWrapper } from '@/features/auth/card-wrapper'
+
 import {
   Form,
   FormControl,
@@ -18,6 +21,8 @@ import {
   Button,
 } from '@/shared/ui'
 
+import ReCAPTCHA from 'react-google-recaptcha'
+
 export function RegisterForm() {
   const form = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
@@ -27,6 +32,9 @@ export function RegisterForm() {
       password: '',
     },
   })
+
+  const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
+  const { theme } = useTheme()
 
   const onSubmit = async (values: RegisterSchemaType) => {
     console.log(values)
@@ -97,6 +105,14 @@ export function RegisterForm() {
               </FormItem>
             )}
           />
+
+          <div className="flex justify-center">
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY || ''}
+              onChange={setRecaptchaValue}
+              theme={theme === 'ligth' ? 'light' : 'dark'}
+            />
+          </div>
 
           <Button
             className="cursor-pointer"

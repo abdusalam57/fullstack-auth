@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import './globals.css'
 import { RootProvider } from './providers'
-import { ThemeToggle } from '@/features/themeToggle'
+import { ThemeToggle } from '@/features/theme-toggle'
 
 const nunito = Nunito({
   variable: '--font-nunito',

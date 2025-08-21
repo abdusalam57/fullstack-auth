@@ -1,7 +1,10 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { type LoginSchemaType, LoginSchema } from '@/features/auth/login/model'
+import {
+  type ResetPasswordSchemaType,
+  ResetPasswordSchema,
+} from '@/features/auth/reset-password/model'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
@@ -18,31 +21,29 @@ import {
   Button,
 } from '@/shared/ui'
 
-import Link from 'next/link'
 import ReCAPTCHA from 'react-google-recaptcha'
 
-export function LoginForm() {
-  const form = useForm<LoginSchemaType>({
-    resolver: zodResolver(LoginSchema),
+export function ResetPasswordForm() {
+  const form = useForm<ResetPasswordSchemaType>({
+    resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
       email: '',
-      password: '',
     },
   })
 
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const { theme } = useTheme()
 
-  const onSubmit = async (values: LoginSchemaType) => {
+  const onSubmit = async (values: ResetPasswordSchemaType) => {
     console.log(values)
   }
 
   return (
     <CardWrapper
-      headerLabel="Войти в аккаунт"
-      description="Для входа на сайт используйте ваш email и пароль, которые были указаны при регистрации на сайте"
-      backButtonLabel="Ещё нет аккаунта? Регистрация"
-      backButtonHref="/auth/register"
+      headerLabel="Сброс пароля"
+      description="Для сброса пароля введите свою почту"
+      backButtonLabel="Уже есть аккаунт? Войти"
+      backButtonHref="/auth/login"
     >
       <Form {...form}>
         <form
@@ -59,32 +60,6 @@ export function LoginForm() {
                   <Input
                     placeholder="john.doe@example.com"
                     type="email"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex items-center justify-between">
-                  <FormLabel>Пароль</FormLabel>
-                  <Link
-                    href="/auth/reset-password"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Забыли пароль?
-                  </Link>
-                </div>
-                <FormControl>
-                  <Input
-                    placeholder="******"
-                    type="password"
                     {...field}
                   />
                 </FormControl>
