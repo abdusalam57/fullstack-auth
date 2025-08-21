@@ -72,7 +72,7 @@ export function ResetPasswordForm() {
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_GOOGLE_RECAPTCHA_SITE_KEY || ''}
               onChange={setRecaptchaValue}
-              theme={theme === 'ligth' ? 'light' : 'dark'}
+              theme={theme === 'light' ? 'light' : 'dark'}
             />
           </div>
 
