@@ -1,10 +1,6 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import {
-  type ResetPasswordSchemaType,
-  ResetPasswordSchema,
-} from '@/features/auth/reset-password/model'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
@@ -22,6 +18,14 @@ import {
 } from '@/shared/ui'
 
 import ReCAPTCHA from 'react-google-recaptcha'
+
+import z from 'zod'
+
+export const ResetPasswordSchema = z.object({
+  email: z.string().min(1, 'Введите почту').email('Введите корректную почту'),
+})
+
+export type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>
 
 export function ResetPasswordForm() {
   const form = useForm<ResetPasswordSchemaType>({

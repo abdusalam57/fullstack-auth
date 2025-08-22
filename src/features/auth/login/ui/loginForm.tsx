@@ -1,7 +1,6 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { type LoginSchemaType, LoginSchema } from '@/features/auth/login/model'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
@@ -20,6 +19,15 @@ import {
 
 import Link from 'next/link'
 import ReCAPTCHA from 'react-google-recaptcha'
+
+import z from 'zod'
+
+export const LoginSchema = z.object({
+  email: z.string().min(1, 'Введите почту').email('Введите корректную почту'),
+  password: z.string().min(1, 'Введите пароль').min(6, 'Минимум 6 символов'),
+})
+
+export type LoginSchemaType = z.infer<typeof LoginSchema>
 
 export function LoginForm() {
   const form = useForm<LoginSchemaType>({

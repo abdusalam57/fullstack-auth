@@ -1,10 +1,6 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import {
-  type NewPasswordSchemaType,
-  NewPasswordSchema,
-} from '@/features/auth/new-password/model'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
@@ -22,6 +18,14 @@ import {
 } from '@/shared/ui'
 
 import ReCAPTCHA from 'react-google-recaptcha'
+
+import z from 'zod'
+
+export const NewPasswordSchema = z.object({
+  password: z.string().min(1, 'Введите пароль').min(6, 'Минимум 6 символов'),
+})
+
+export type NewPasswordSchemaType = z.infer<typeof NewPasswordSchema>
 
 export function NewPasswordForm() {
   const form = useForm<NewPasswordSchemaType>({

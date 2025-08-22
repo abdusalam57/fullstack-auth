@@ -1,10 +1,6 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import {
-  type RegisterSchemaType,
-  RegisterSchema,
-} from '@/features/auth/register/model'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
@@ -22,6 +18,16 @@ import {
 } from '@/shared/ui'
 
 import ReCAPTCHA from 'react-google-recaptcha'
+
+import z from 'zod'
+
+export const RegisterSchema = z.object({
+  name: z.string().min(1, 'Введите имя').min(2, 'Минимум 2 символа'),
+  email: z.string().min(1, 'Введите почту').email('Введите корректную почту'),
+  password: z.string().min(1, 'Введите пароль').min(6, 'Минимум 6 символов'),
+})
+
+export type RegisterSchemaType = z.infer<typeof RegisterSchema>
 
 export function RegisterForm() {
   const form = useForm<RegisterSchemaType>({
