@@ -11,8 +11,6 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "test:coverage": "jest --coverage",
-    "docker:build": "docker build -t fullstack-auth .",
-    "docker:run": "docker run --rm -it -p 3000:3000 fullstack-auth",
     "prepare": "husky"
   },
   "dependencies": {
