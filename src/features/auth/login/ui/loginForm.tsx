@@ -51,6 +51,7 @@ export function LoginForm() {
       description="Для входа на сайт используйте ваш email и пароль, которые были указаны при регистрации на сайте"
       backButtonLabel="Ещё нет аккаунта? Регистрация"
       backButtonHref="/auth/register"
+      showSocial
     >
       <Form {...form}>
         <form

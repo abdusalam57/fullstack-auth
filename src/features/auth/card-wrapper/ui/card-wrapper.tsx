@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react'
-import Link from 'next/link'
+
 import {
   Card,
   CardContent,
@@ -10,11 +10,15 @@ import {
   Button,
 } from '@/shared/ui'
 
+import { Social } from '@/features/auth/social'
+import Link from 'next/link'
+
 interface CardWrapperProps {
   headerLabel: string
   description?: string
   backButtonLabel?: string
   backButtonHref?: string
+  showSocial?: boolean
 }
 
 export function CardWrapper({
@@ -23,6 +27,7 @@ export function CardWrapper({
   description,
   backButtonLabel,
   backButtonHref,
+  showSocial = false,
 }: PropsWithChildren<CardWrapperProps>) {
   return (
     <Card className="w-[400px] gap-3">
@@ -30,7 +35,10 @@ export function CardWrapper({
         <CardTitle>{headerLabel}</CardTitle>
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      <CardContent>
+        {showSocial && <Social />}
+        {children}
+      </CardContent>
       <CardFooter>
         {backButtonLabel && backButtonHref && (
           <Button
