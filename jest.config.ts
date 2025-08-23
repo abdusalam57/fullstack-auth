@@ -8,7 +8,7 @@ const createJestConfig = nextJest({
 const config: Config = {
   clearMocks: true,
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
 
   testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
 
