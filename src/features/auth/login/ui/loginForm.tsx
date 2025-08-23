@@ -3,8 +3,9 @@
 import { useForm } from 'react-hook-form'
 import { type LoginSchemaType, LoginSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { useTheme } from 'next-themes'
+import { LoginAction } from '@/actions'
 import { toast } from 'sonner'
 import { CardWrapper } from '@/features/auth/card-wrapper'
 
@@ -34,9 +35,19 @@ export function LoginForm() {
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const { theme } = useTheme()
 
+  const [isPending, startTransition] = useTransition()
+
   const onSubmit = async (values: LoginSchemaType) => {
     if (recaptchaValue) {
-      console.log(values)
+      startTransition(async () => {
+        const result = await LoginAction(values)
+
+        if (result?.error) {
+          toast.error(result.error)
+        } else if (result?.success) {
+          toast.success(result.success)
+        }
+      })
     } else {
       toast.error('Пожалуйста, завершите reCAPTCHA')
     }
@@ -63,6 +74,7 @@ export function LoginForm() {
                 <FormLabel>Почта</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={isPending}
                     placeholder="john.doe@example.com"
                     type="email"
                     {...field}
@@ -89,6 +101,7 @@ export function LoginForm() {
                 </div>
                 <FormControl>
                   <Input
+                    disabled={isPending}
                     placeholder="******"
                     type="password"
                     {...field}
@@ -108,6 +121,7 @@ export function LoginForm() {
           </div>
 
           <Button
+            disabled={isPending}
             className="cursor-pointer"
             type="submit"
           >
