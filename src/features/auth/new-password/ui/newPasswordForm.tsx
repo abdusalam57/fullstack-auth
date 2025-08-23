@@ -1,9 +1,11 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import { type NewPasswordSchemaType, NewPasswordSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
+import { toast } from 'sonner'
 import { CardWrapper } from '@/features/auth/card-wrapper'
 
 import {
@@ -19,14 +21,6 @@ import {
 
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import z from 'zod'
-
-export const NewPasswordSchema = z.object({
-  password: z.string().min(1, 'Введите пароль').min(6, 'Минимум 6 символов'),
-})
-
-export type NewPasswordSchemaType = z.infer<typeof NewPasswordSchema>
-
 export function NewPasswordForm() {
   const form = useForm<NewPasswordSchemaType>({
     resolver: zodResolver(NewPasswordSchema),
@@ -39,7 +33,11 @@ export function NewPasswordForm() {
   const { theme } = useTheme()
 
   const onSubmit = async (values: NewPasswordSchemaType) => {
-    console.log(values)
+    if (recaptchaValue) {
+      console.log(values)
+    } else {
+      toast.error('Пожалуйста, завершите reCAPTCHA')
+    }
   }
 
   return (

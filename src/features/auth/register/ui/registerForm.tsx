@@ -1,9 +1,12 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import { type RegisterSchemaType, RegisterSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { useTheme } from 'next-themes'
+import { RegisterAction } from '@/actions'
+import { toast } from 'sonner'
 import { CardWrapper } from '@/features/auth/card-wrapper'
 
 import {
@@ -19,16 +22,6 @@ import {
 
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import z from 'zod'
-
-export const RegisterSchema = z.object({
-  name: z.string().min(1, 'Введите имя').min(2, 'Минимум 2 символа'),
-  email: z.string().min(1, 'Введите почту').email('Введите корректную почту'),
-  password: z.string().min(1, 'Введите пароль').min(6, 'Минимум 6 символов'),
-})
-
-export type RegisterSchemaType = z.infer<typeof RegisterSchema>
-
 export function RegisterForm() {
   const form = useForm<RegisterSchemaType>({
     resolver: zodResolver(RegisterSchema),
@@ -42,8 +35,22 @@ export function RegisterForm() {
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const { theme } = useTheme()
 
+  const [isPending, startTransition] = useTransition()
+
   const onSubmit = async (values: RegisterSchemaType) => {
-    console.log(values)
+    if (recaptchaValue) {
+      startTransition(async () => {
+        const result = await RegisterAction(values)
+
+        if (result?.error) {
+          toast.error(result.error)
+        } else if (result?.success) {
+          toast.success(result.success)
+        }
+      })
+    } else {
+      toast.error('Пожалуйста, завершите reCAPTCHA')
+    }
   }
 
   return (
@@ -66,6 +73,7 @@ export function RegisterForm() {
                 <FormLabel>Имя</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={isPending}
                     placeholder="John Doe"
                     type="text"
                     {...field}
@@ -84,6 +92,7 @@ export function RegisterForm() {
                 <FormLabel>Почта</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={isPending}
                     placeholder="john.doe@example.com"
                     type="email"
                     {...field}
@@ -102,6 +111,7 @@ export function RegisterForm() {
                 <FormLabel>Пароль</FormLabel>
                 <FormControl>
                   <Input
+                    disabled={isPending}
                     placeholder="******"
                     type="password"
                     {...field}
@@ -121,6 +131,7 @@ export function RegisterForm() {
           </div>
 
           <Button
+            disabled={isPending}
             className="cursor-pointer"
             type="submit"
           >

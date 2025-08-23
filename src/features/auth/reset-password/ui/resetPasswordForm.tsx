@@ -1,9 +1,11 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import { type ResetPasswordSchemaType, ResetPasswordSchema } from '@/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useTheme } from 'next-themes'
+import { toast } from 'sonner'
 import { CardWrapper } from '@/features/auth/card-wrapper'
 
 import {
@@ -19,14 +21,6 @@ import {
 
 import ReCAPTCHA from 'react-google-recaptcha'
 
-import z from 'zod'
-
-export const ResetPasswordSchema = z.object({
-  email: z.string().min(1, 'Введите почту').email('Введите корректную почту'),
-})
-
-export type ResetPasswordSchemaType = z.infer<typeof ResetPasswordSchema>
-
 export function ResetPasswordForm() {
   const form = useForm<ResetPasswordSchemaType>({
     resolver: zodResolver(ResetPasswordSchema),
@@ -39,7 +33,11 @@ export function ResetPasswordForm() {
   const { theme } = useTheme()
 
   const onSubmit = async (values: ResetPasswordSchemaType) => {
-    console.log(values)
+    if (recaptchaValue) {
+      console.log(values)
+    } else {
+      toast.error('Пожалуйста, завершите reCAPTCHA')
+    }
   }
 
   return (
