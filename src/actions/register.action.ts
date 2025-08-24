@@ -2,7 +2,11 @@
 
 import { type RegisterSchemaType, RegisterSchema } from '@/schemas'
 import bcrypt from 'bcryptjs'
-import { prisma } from '@/shared/lib'
+import {
+  prisma,
+  generateVerificationToken,
+  sendVerificationEmail,
+} from '@/shared/lib'
 
 export const RegisterAction = async (values: RegisterSchemaType) => {
   const validatedFields = RegisterSchema.safeParse(values)
@@ -29,5 +33,9 @@ export const RegisterAction = async (values: RegisterSchemaType) => {
     },
   })
 
-  return { success: 'Аккаунт успешно создан' }
+  const verificationToken = await generateVerificationToken(email)
+
+  await sendVerificationEmail(verificationToken.email, verificationToken.token)
+
+  return { success: 'Письмо с подтверждением отправлено' }
 }

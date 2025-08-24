@@ -1,6 +1,11 @@
 'use server'
 
 import { type LoginSchemaType, LoginSchema } from '@/schemas'
+import {
+  prisma,
+  generateVerificationToken,
+  sendVerificationEmail,
+} from '@/shared/lib'
 import { signIn } from '@/auth'
 import { AuthError } from 'next-auth'
 
@@ -12,6 +17,25 @@ export const LoginAction = async (values: LoginSchemaType) => {
   }
 
   const { email, password } = validatedFields.data
+
+  const existingUser = await prisma.user.findUnique({ where: { email } })
+
+  if (!existingUser || !existingUser.email || !existingUser.password) {
+    return { error: 'Пользователь с такой почтой не найден' }
+  }
+
+  if (!existingUser.emailVerified) {
+    const verificationToken = await generateVerificationToken(
+      existingUser.email,
+    )
+
+    await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token,
+    )
+
+    return { success: 'Письмо с подтверждением отправлено' }
+  }
 
   try {
     await signIn('credentials', {
